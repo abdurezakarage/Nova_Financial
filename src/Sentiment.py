@@ -15,9 +15,6 @@ import re
 from scipy import stats
 
  # Download required NLTK data
-nltk.data.find('corpora/stopwords')
-nltk.data.find('corpora/wordnet')
-nltk.data.find('tokenizers/punkt')
 nltk.download('punkt')
 nltk.download('stopwords')
 nltk.download('wordnet')
@@ -132,6 +129,12 @@ class Raw_Analyst_Ratings:
 
     #publication trend
     def analyze_publication_trends(self):
+        # Ensure the 'date' column is in datetime format
+        self.df['date'] = pd.to_datetime(self.df['date'])
+        
+        # Group by the date part and count occurrences
+        daily_counts = self.df.groupby(self.df['date'].dt.date).size()
+        
         fig, ax = plt.subplots(figsize=(10, 6))
         daily_counts = self.df.groupby(self.df['date'].dt.date).size()
         daily_counts.plot(kind='line', ax=ax)

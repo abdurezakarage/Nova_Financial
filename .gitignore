@@ -4,17 +4,11 @@ __pycache__/
 *$py.class
 *.so
 .Python
-data
+data/
 
 # Virtual Environment
 venv/
 env/
 ENV/
 
-.vscode/
 
-# Jupyter Notebook
-.ipynb_checkpoints
-*.ipynb_checkpoints/
-# Logs
-*.log

@@ -4,7 +4,6 @@ import sys
 import os
 import talib
 import numpy as np
-from pynance import metrics
 
 class QuanitativeAnalysis:
     def __init__(self, df, stock_name):
@@ -23,15 +22,6 @@ class QuanitativeAnalysis:
         plt.ylabel('Price')
         plt.legend()
         plt.show()
-    #load data from csv file
-    def load_data(self, file_path):
-     
-        self.df = pd.read_csv(file_path)
-        # Ensure required columns are present
-        required_columns = ['Open', 'High', 'Low', 'Close', 'Volume']
-        for col in required_columns:
-            if col not in self.df.columns:
-                raise ValueError(f"Column '{col}' not found in the data.")
     #calculate technical indicators
     def calculate_technical_indicators(self):
         # Calculate Simple Moving Averages

@@ -5,6 +5,8 @@ jupyter==1.0.0
 notebook==7.0.6
 numpy==1.26.2
 yfinance==0.2.36
+pynance==0.1.1
+talib==0.4.24
 textblob==0.17.1
 seaborn==0.13.1
 nltk==3.8.1

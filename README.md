@@ -1,4 +1,4 @@
-# Nova Financial
+# Nova Financial Solutions
 
 A comprehensive financial analysis and trading platform that combines technical analysis, sentiment analysis, and machine learning to provide insights into market trends and trading opportunities.
 

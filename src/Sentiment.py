@@ -14,11 +14,34 @@ from collections import Counter
 import re
 from scipy import stats
 
- # Download required NLTK data
-nltk.download('punkt')
-nltk.download('stopwords')
-nltk.download('wordnet')
-nltk.download('vader_lexicon')
+# Download required NLTK data
+# More robust download checks
+try:
+    nltk.data.find('tokenizers/punkt')
+except LookupError:
+    print("Downloading 'punkt' for tokenization...")
+    nltk.download('punkt', quiet=True)
+try:
+    nltk.data.find('corpora/stopwords')
+except LookupError:
+    print("Downloading 'stopwords'...")
+    nltk.download('stopwords', quiet=True)
+try:
+    nltk.data.find('corpora/wordnet')
+except LookupError:
+    print("Downloading 'wordnet' for lemmatization...")
+    nltk.download('wordnet', quiet=True)
+try:
+    # WordNetLemmatizer might also need 'omw-1.4' for multilingual wordnets
+    nltk.data.find('corpora/omw-1.4')
+except LookupError:
+    print("Downloading 'omw-1.4' for WordNet...")
+    nltk.download('omw-1.4', quiet=True)
+try:
+    nltk.data.find('sentiment/vader_lexicon.zip')
+except LookupError:
+    print("Downloading 'vader_lexicon' for sentiment analysis...")
+    nltk.download('vader_lexicon', quiet=True)
 
 
 class Raw_Analyst_Ratings:
@@ -129,14 +152,18 @@ class Raw_Analyst_Ratings:
 
     #publication trend
     def analyze_publication_trends(self):
-        # Ensure the 'date' column is in datetime format
-        self.df['date'] = pd.to_datetime(self.df['date'])
+        # Handle mixed-format timestamps (with/without timezone)
+        self.df['date'] = pd.to_datetime(
+            self.df['date'], 
+            format='mixed',  # Infer format for each element
+            utc=True         # Convert all to UTC for consistency
+        )
         
-        # Group by the date part and count occurrences
+        # Group by date and count articles
         daily_counts = self.df.groupby(self.df['date'].dt.date).size()
         
+        # Plot
         fig, ax = plt.subplots(figsize=(10, 6))
-        daily_counts = self.df.groupby(self.df['date'].dt.date).size()
         daily_counts.plot(kind='line', ax=ax)
         ax.set_title('News Frequency Over Time')
         ax.set_xlabel('Date')
@@ -309,6 +336,41 @@ class Raw_Analyst_Ratings:
         
         return fig, spikes
 
+    # Find the most positive and negative headlines by sentiment
+    def analyze_extreme_sentiments(self):
+        # Calculate sentiment polarity for each headline
+        self.df['sentiment'] = self.df['headline'].astype(str).apply(lambda x: TextBlob(x).sentiment.polarity)
+        
+        # Find the most positive and most negative headlines
+        most_positive = self.df.loc[self.df['sentiment'].idxmax()]
+        most_negative = self.df.loc[self.df['sentiment'].idxmin()]
+
+        print("\n=== Most Positive Headline ===")
+        print(f"Date: {most_positive['date']}")
+        print(f"Publisher: {most_positive['publisher']}")
+        print(f"Headline: {most_positive['headline']}")
+        print(f"Sentiment Score: {most_positive['sentiment']:.3f}")
+
+        print("\n=== Most Negative Headline ===")
+        print(f"Date: {most_negative['date']}")
+        print(f"Publisher: {most_negative['publisher']}")
+        print(f"Headline: {most_negative['headline']}")
+        print(f"Sentiment Score: {most_negative['sentiment']:.3f}")
+
+        # Plot the distribution of sentiment scores
+        plt.figure(figsize=(8, 4))
+        sns.histplot(self.df['sentiment'], bins=20, kde=True)
+        plt.title('Distribution of Sentiment Scores for Headlines')
+        plt.xlabel('Sentiment Polarity')
+        plt.ylabel('Frequency')
+        plt.gca().spines[['top', 'right']].set_visible(False)
+        plt.show()
+
+        return {
+            'most_positive': most_positive[['date', 'publisher', 'headline', 'sentiment']],
+            'most_negative': most_negative[['date', 'publisher', 'headline', 'sentiment']]
+        }
+
     #perform eda
     def perform_eda(self):
         # Create a figure with subplots
@@ -367,4 +429,6 @@ class Raw_Analyst_Ratings:
         print(f"To: {self.df['date'].max()}")
         
         print("\nArticles per Day of Week:")
-        print(day_counts) 
+        print(day_counts)
+
+        print(self.df['date'].iloc[10])  # Check the timestamp at position 10 

@@ -1,4 +1,5 @@
-# Nova Financial
+
+# Nova Financial Solutions
 
 A comprehensive financial analysis and trading platform that combines technical analysis, sentiment analysis, and machine learning to provide insights into market trends and trading opportunities.
 
@@ -12,9 +13,9 @@ A comprehensive financial analysis and trading platform that combines technical 
 
 ## Project Structure
 
-```
 Nova_Financial/
 ├── src/               # Source code
+
 │   ├── analysis/     # Technical and sentiment analysis modules
 │   ├── data/         # Data processing and management
 │   ├── models/       # Machine learning models
@@ -27,8 +28,7 @@ Nova_Financial/
 │   └── sentiment/   # Sentiment analysis notebooks
 ├── tests/           # Unit and integration tests
 ├── docs/            # Documentation
-└── requirements.txt  # Project dependencies
-```
+└── requirements.txt  # Project dependencie
 
 ## Branch Structure
 
@@ -43,32 +43,29 @@ Nova_Financial/
 
 1. Clone the repository:
 ```bash
+
 git clone https://github.com/abdurezakarage/Nova_Financial.git
+
 cd Nova_Financial
 ```
 
 2. Create a virtual environment (recommended):
-```bash
-# For Windows
+```bas
 python -m venv venv
-venv\Scripts\activate
-
-# For Unix/MacOS
-python -m venv venv
-source venv/bin/activate
-```
+source venv/bin/activate  # On Windows: venv\Scripts\activat
 
 3. Install dependencies:
 ```bash
 pip install -r requirements.txt
 ```
 
+
 4. Set up environment variables:
 ```bash
 # Create a .env file in the root directory
 cp .env.example .env
 # Edit .env with your configuration
-```
+
 
 ## Dependencies
 
@@ -85,6 +82,7 @@ cp .env.example .env
 
 ## Usage
 
+
 ### Starting the Development Environment
 
 1. Activate the virtual environment:
@@ -97,9 +95,11 @@ source venv/bin/activate
 ```
 
 2. Start Jupyter Notebook:
+
 ```bash
 jupyter notebook
 ```
+
 
 3. Navigate to the `notebooks` directory to access analysis notebooks
 `
@@ -131,9 +131,11 @@ Run the test suite:
 pytest tests/
 ```
 
+
 ## Contributing
 
 1. Fork the repository
+
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
 3. Commit your changes (`git commit -m 'Add amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
@@ -153,3 +155,4 @@ pytest tests/
 - GitHub Issues: [Create an issue](https://github.com/abdurezakarage/Nova_Financial/issues)
 - Email: abdurezakhwre.com
 - Project Link: [https://github.com/abdurezakarage/Nova_Financial]
+
